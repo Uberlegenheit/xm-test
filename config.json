@@ -1,0 +1,16 @@
+{
+  "API": {
+    "ListenOnPort": 9000,
+    "CORSAllowedOrigins": [
+      "*"
+    ]
+  },
+  "Postgres": {
+    "Host": "postgres-db",
+    "Port": "5432",
+    "User": "postgres",
+    "Password": "somesecretpassword1234",
+    "Database": "xm-test-db",
+    "SSLMode": "disable"
+  }
+}

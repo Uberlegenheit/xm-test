@@ -77,6 +77,7 @@ func (api *API) initialize() {
 
 	api.router.GET("/companies/:id", api.GetCompany)
 	api.router.POST("/sign-in", api.SignIn)
+	api.router.POST("/refresh", api.Refresh)
 
 	// protected routes
 	authGroup := api.router.Group("/auth")

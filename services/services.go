@@ -2,7 +2,7 @@ package services
 
 import (
 	"fmt"
-	"github.com/confluentinc/confluent-kafka-go/kafka"
+	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"xm-task/conf"
@@ -40,11 +40,12 @@ type (
 
 func NewService(cfg conf.Config, dao dao.DAO) (*ServiceFacade, error) {
 	p, err := kafka.NewProducer(&kafka.ConfigMap{
-		"bootstrap.servers": "localhost:9092",
+		"bootstrap.servers": "kafka:9092",
 	})
 	if err != nil {
 		return nil, fmt.Errorf("Failed to create producer: %s\n", err)
 	}
+
 	return &ServiceFacade{
 		cfg:   cfg,
 		dao:   dao,

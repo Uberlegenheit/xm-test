@@ -59,6 +59,23 @@ func (api *API) SignIn(c *gin.Context) {
 	})
 }
 
+func (api *API) Refresh(c *gin.Context) {
+	td, err := api.services.Refresh(c.Request)
+	if err != nil {
+		log.Error("[api] Refresh: Refresh", zap.Error(err))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success":         true,
+		"access_token":    td.AccessToken,
+		"refresh_token":   td.RefreshToken,
+		"access_expired":  td.AtExpires,
+		"refresh_expired": td.RtExpires,
+	})
+}
+
 func (api *API) LogOut(c *gin.Context) {
 	au, err := api.services.ExtractTokenMetadata(c)
 	if err != nil {
