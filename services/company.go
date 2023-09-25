@@ -82,7 +82,6 @@ func (s *ServiceFacade) UpdateCompany(company smodels.Company) (dmodels.Company,
 }
 
 func (s *ServiceFacade) GetCompanyByID(id string) (dmodels.CompanyShow, error) {
-
 	company, err := s.dao.GetCompanyByID(id)
 	if err != nil {
 		return dmodels.CompanyShow{}, fmt.Errorf("dao.GetCompanyByID: %v", err)

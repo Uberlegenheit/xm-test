@@ -4,6 +4,7 @@ import (
 	"flag"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 
 	"go.uber.org/zap"
@@ -17,7 +18,9 @@ import (
 
 func main() {
 	var configPath string
+	var migrate string
 	flag.StringVar(&configPath, "config", "./config.json", "Path to the config file")
+	flag.StringVar(&migrate, "migrate", "true", "Should backend make migration?")
 	flag.Parse()
 
 	if configPath == "" {
@@ -26,12 +29,23 @@ func main() {
 		return
 	}
 
+	if migrate == "" {
+		log.Info("Usage: program_name -migrate <boolean>")
+		flag.PrintDefaults()
+		return
+	}
+
+	bMigrate, err := strconv.ParseBool(migrate)
+	if err != nil {
+		log.Fatal("cannot parse bool param", zap.Error(err))
+	}
+
 	config, err := conf.GetNewConfig(configPath)
 	if err != nil {
 		log.Fatal("cannot read config from file", zap.Error(err))
 	}
 
-	d, err := dao.New(config)
+	d, err := dao.New(config, bMigrate)
 	if err != nil {
 		log.Fatal("dao.New", zap.Error(err))
 	}

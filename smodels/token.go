@@ -13,3 +13,7 @@ type AccessDetails struct {
 	AccessUuid string
 	Email      string
 }
+
+type TestTokenDetails struct {
+	AccessToken string `json:"access_token"`
+}

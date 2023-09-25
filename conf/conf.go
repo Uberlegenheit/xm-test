@@ -13,7 +13,6 @@ type (
 	API struct {
 		ListenOnPort       uint64
 		CORSAllowedOrigins []string
-		HttpSwaggerAddress string
 	}
 	Postgres struct {
 		Host     string

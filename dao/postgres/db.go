@@ -23,7 +23,7 @@ type Postgres struct {
 	db  *gorm.DB
 }
 
-func NewPostgres(cfg conf.Postgres) (*Postgres, error) {
+func NewPostgres(cfg conf.Postgres, migrate bool) (*Postgres, error) {
 	conn, err := makeConn(cfg)
 	if err != nil {
 		return nil, fmt.Errorf("makeConn: %s", err.Error())
@@ -42,10 +42,13 @@ func NewPostgres(cfg conf.Postgres) (*Postgres, error) {
 		cfg: cfg,
 		db:  conn,
 	}
-	err = db.makeMigration(conn, migrationsPath)
-	if err != nil {
-		return nil, fmt.Errorf("makeMigration: %s", err.Error())
+	if migrate {
+		err = db.makeMigration(conn, migrationsPath)
+		if err != nil {
+			return nil, fmt.Errorf("makeMigration: %s", err.Error())
+		}
 	}
+
 	return db, nil
 }
 

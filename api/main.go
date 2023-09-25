@@ -53,6 +53,10 @@ func (api *API) Title() string {
 	return "API"
 }
 
+func (api *API) Router() *gin.Engine {
+	return api.router
+}
+
 func (api *API) initialize() {
 	api.router = gin.Default()
 

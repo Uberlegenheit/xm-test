@@ -42,8 +42,8 @@ type (
 	}
 )
 
-func New(cfg conf.Config) (DAO, error) {
-	pg, err := postgres.NewPostgres(cfg.Postgres)
+func New(cfg conf.Config, migrate bool) (DAO, error) {
+	pg, err := postgres.NewPostgres(cfg.Postgres, migrate)
 	if err != nil {
 		return nil, fmt.Errorf("postgres.NewPostgres: %s", err.Error())
 	}
