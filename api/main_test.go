@@ -32,14 +32,14 @@ func TestCreateCompanyIntegration(t *testing.T) {
 			SSLMode:  "disable",
 		},
 	}
-	d, err := dao.New(cfg, false)
-	require.NoError(t, err)
+	d, err1 := dao.New(cfg, false)
+	require.NoError(t, err1)
 
-	service, err := services.NewService(cfg, d)
-	require.NoError(t, err)
+	service, err2 := services.NewService(cfg, d)
+	require.NoError(t, err2)
 
-	a, err := api.NewAPI(cfg, service)
-	require.NoError(t, err)
+	a, err3 := api.NewAPI(cfg, service)
+	require.NoError(t, err3)
 
 	ts := httptest.NewServer(a.Router())
 	defer ts.Close()
@@ -52,11 +52,11 @@ func TestCreateCompanyIntegration(t *testing.T) {
 			Registered: true,
 			Type:       "Corporation",
 		}
-		requestBody, err := json.Marshal(company)
-		require.NoError(t, err)
+		requestBody, err4 := json.Marshal(company)
+		require.NoError(t, err4)
 
-		resp, err := http.Post(ts.URL+"/auth/companies", "application/json", bytes.NewReader(requestBody))
-		require.NoError(t, err)
+		resp, err5 := http.Post(ts.URL+"/auth/companies", "application/json", bytes.NewReader(requestBody))
+		require.NoError(t, err5)
 		defer resp.Body.Close()
 
 		assert.Equal(t, http.StatusUnauthorized, resp.StatusCode)
@@ -68,16 +68,16 @@ func TestCreateCompanyIntegration(t *testing.T) {
 			Email:    "email12@gmail.com",
 			Password: "23rwgfds",
 		}
-		requestBody, err := json.Marshal(user)
-		require.NoError(t, err)
+		requestBody, err6 := json.Marshal(user)
+		require.NoError(t, err6)
 
-		userResp, err := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
-		require.NoError(t, err)
+		userResp, err7 := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
+		require.NoError(t, err7)
 		defer userResp.Body.Close()
 
 		var tt smodels.TestTokenDetails
-		err = json.NewDecoder(userResp.Body).Decode(&tt)
-		require.NoError(t, err)
+		err8 := json.NewDecoder(userResp.Body).Decode(&tt)
+		require.NoError(t, err8)
 
 		name, err := regen.Generate(fmt.Sprintf("[a-zA-Z0-9]{%d,%d}", 15, 15))
 		company := smodels.Company{
@@ -88,17 +88,17 @@ func TestCreateCompanyIntegration(t *testing.T) {
 			Registered:  true,
 			Type:        "Corporations",
 		}
-		requestBody, err = json.Marshal(company)
-		require.NoError(t, err)
+		requestBody2, err9 := json.Marshal(company)
+		require.NoError(t, err9)
 
-		r, err := http.NewRequest("POST", ts.URL+"/auth/companies", bytes.NewBuffer(requestBody))
+		r, err := http.NewRequest("POST", ts.URL+"/auth/companies", bytes.NewBuffer(requestBody2))
 		require.NoError(t, err)
 		r.Header.Add("Authorization", fmt.Sprintf("Bearer %s", tt.AccessToken))
 		r.Header.Add("Content-Type", "application/json")
 
 		client := &http.Client{}
-		resp, err := client.Do(r)
-		require.NoError(t, err)
+		resp, err10 := client.Do(r)
+		require.NoError(t, err10)
 
 		defer resp.Body.Close()
 
@@ -111,18 +111,19 @@ func TestCreateCompanyIntegration(t *testing.T) {
 			Email:    "email12@gmail.com",
 			Password: "23rwgfds",
 		}
-		requestBody, err := json.Marshal(user)
-		require.NoError(t, err)
+		requestBody, err11 := json.Marshal(user)
+		require.NoError(t, err11)
 
-		userResp, err := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
-		require.NoError(t, err)
+		userResp, err12 := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
+		require.NoError(t, err12)
 		defer userResp.Body.Close()
 
 		var tt smodels.TestTokenDetails
-		err = json.NewDecoder(userResp.Body).Decode(&tt)
-		require.NoError(t, err)
+		err13 := json.NewDecoder(userResp.Body).Decode(&tt)
+		require.NoError(t, err13)
 
-		name, err := regen.Generate(fmt.Sprintf("[a-zA-Z0-9]{%d,%d}", 15, 15))
+		name, err131 := regen.Generate(fmt.Sprintf("[a-zA-Z0-9]{%d,%d}", 15, 15))
+		require.NoError(t, err131)
 		company := smodels.Company{
 			Name:        name,
 			Description: "some description",
@@ -130,17 +131,17 @@ func TestCreateCompanyIntegration(t *testing.T) {
 			Registered:  true,
 			Type:        "random value",
 		}
-		requestBody, err = json.Marshal(company)
-		require.NoError(t, err)
+		requestBody2, err14 := json.Marshal(company)
+		require.NoError(t, err14)
 
-		r, err := http.NewRequest("POST", ts.URL+"/auth/companies", bytes.NewBuffer(requestBody))
-		require.NoError(t, err)
+		r, err15 := http.NewRequest("POST", ts.URL+"/auth/companies", bytes.NewBuffer(requestBody2))
+		require.NoError(t, err15)
 		r.Header.Add("Authorization", fmt.Sprintf("Bearer %s", tt.AccessToken))
 		r.Header.Add("Content-Type", "application/json")
 
 		client := &http.Client{}
-		resp, err := client.Do(r)
-		require.NoError(t, err)
+		resp, err16 := client.Do(r)
+		require.NoError(t, err16)
 
 		defer resp.Body.Close()
 
@@ -163,14 +164,14 @@ func TestCreateAndGetAndDeleteCompanyIntegration(t *testing.T) {
 			SSLMode:  "disable",
 		},
 	}
-	d, err := dao.New(cfg, false)
-	require.NoError(t, err)
+	d, err1 := dao.New(cfg, false)
+	require.NoError(t, err1)
 
-	service, err := services.NewService(cfg, d)
-	require.NoError(t, err)
+	service, err2 := services.NewService(cfg, d)
+	require.NoError(t, err2)
 
-	a, err := api.NewAPI(cfg, service)
-	require.NoError(t, err)
+	a, err3 := api.NewAPI(cfg, service)
+	require.NoError(t, err3)
 
 	ts := httptest.NewServer(a.Router())
 	defer ts.Close()
@@ -182,19 +183,20 @@ func TestCreateAndGetAndDeleteCompanyIntegration(t *testing.T) {
 			Email:    "email12@gmail.com",
 			Password: "23rwgfds",
 		}
-		requestBody, err := json.Marshal(user)
-		require.NoError(t, err)
+		requestBody, err4 := json.Marshal(user)
+		require.NoError(t, err4)
 
-		userResp, err := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
-		require.NoError(t, err)
+		userResp, err5 := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
+		require.NoError(t, err5)
 		defer userResp.Body.Close()
 		assert.Equal(t, http.StatusOK, userResp.StatusCode)
 
 		var tt smodels.TestTokenDetails
-		err = json.NewDecoder(userResp.Body).Decode(&tt)
-		require.NoError(t, err)
+		err6 := json.NewDecoder(userResp.Body).Decode(&tt)
+		require.NoError(t, err6)
 
-		name, err := regen.Generate(fmt.Sprintf("[a-zA-Z0-9]{%d,%d}", 15, 15))
+		name, err7 := regen.Generate(fmt.Sprintf("[a-zA-Z0-9]{%d,%d}", 15, 15))
+		require.NoError(t, err7)
 		company := smodels.Company{
 			Name:        name,
 			Description: "some description",
@@ -202,34 +204,34 @@ func TestCreateAndGetAndDeleteCompanyIntegration(t *testing.T) {
 			Registered:  true,
 			Type:        "Corporations",
 		}
-		requestBody, err = json.Marshal(company)
-		require.NoError(t, err)
+		requestBody2, err8 := json.Marshal(company)
+		require.NoError(t, err8)
 
-		r, err := http.NewRequest("POST", ts.URL+"/auth/companies", bytes.NewBuffer(requestBody))
-		require.NoError(t, err)
+		r, err9 := http.NewRequest("POST", ts.URL+"/auth/companies", bytes.NewBuffer(requestBody2))
+		require.NoError(t, err9)
 		r.Header.Add("Authorization", fmt.Sprintf("Bearer %s", tt.AccessToken))
 		r.Header.Add("Content-Type", "application/json")
 
 		client := &http.Client{}
-		resp, err := client.Do(r)
-		require.NoError(t, err)
+		resp, err10 := client.Do(r)
+		require.NoError(t, err10)
 		defer resp.Body.Close()
 		assert.Equal(t, http.StatusOK, resp.StatusCode)
 
 		var createdCompany smodels.Company
-		err = json.NewDecoder(resp.Body).Decode(&createdCompany)
-		require.NoError(t, err)
+		err11 := json.NewDecoder(resp.Body).Decode(&createdCompany)
+		require.NoError(t, err11)
 
-		getResp, err := http.Get(ts.URL + "/companies/" + createdCompany.ID)
-		require.NoError(t, err)
+		getResp, err12 := http.Get(ts.URL + "/companies/" + createdCompany.ID)
+		require.NoError(t, err12)
 		defer getResp.Body.Close()
 		assert.Equal(t, http.StatusOK, getResp.StatusCode)
 
-		dr, err := http.NewRequest("DELETE", ts.URL+"/auth/companies/"+createdCompany.ID, nil)
-		require.NoError(t, err)
+		dr, err13 := http.NewRequest("DELETE", ts.URL+"/auth/companies/"+createdCompany.ID, nil)
+		require.NoError(t, err13)
 		dr.Header.Add("Authorization", fmt.Sprintf("Bearer %s", tt.AccessToken))
-		delResp, err := client.Do(dr)
-		require.NoError(t, err)
+		delResp, err14 := client.Do(dr)
+		require.NoError(t, err14)
 		defer delResp.Body.Close()
 		assert.Equal(t, http.StatusOK, delResp.StatusCode)
 	})
@@ -250,14 +252,14 @@ func TestSignInIntegration(t *testing.T) {
 			SSLMode:  "disable",
 		},
 	}
-	d, err := dao.New(cfg, false)
-	require.NoError(t, err)
+	d, err1 := dao.New(cfg, false)
+	require.NoError(t, err1)
 
-	service, err := services.NewService(cfg, d)
-	require.NoError(t, err)
+	service, err2 := services.NewService(cfg, d)
+	require.NoError(t, err2)
 
-	a, err := api.NewAPI(cfg, service)
-	require.NoError(t, err)
+	a, err3 := api.NewAPI(cfg, service)
+	require.NoError(t, err3)
 
 	ts := httptest.NewServer(a.Router())
 	defer ts.Close()
@@ -268,11 +270,11 @@ func TestSignInIntegration(t *testing.T) {
 			Email:    "email12@gmail.com",
 			Password: "23rwgfds",
 		}
-		requestBody, err := json.Marshal(user)
-		require.NoError(t, err)
+		requestBody, err4 := json.Marshal(user)
+		require.NoError(t, err4)
 
-		resp, err := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
-		require.NoError(t, err)
+		resp, err5 := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
+		require.NoError(t, err5)
 		defer resp.Body.Close()
 		assert.Equal(t, http.StatusOK, resp.StatusCode)
 	})
@@ -283,11 +285,11 @@ func TestSignInIntegration(t *testing.T) {
 			Email:    "email12@gmail.com",
 			Password: "mypass",
 		}
-		requestBody, err := json.Marshal(user)
-		require.NoError(t, err)
+		requestBody, err6 := json.Marshal(user)
+		require.NoError(t, err6)
 
-		resp, err := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
-		require.NoError(t, err)
+		resp, err7 := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
+		require.NoError(t, err7)
 		defer resp.Body.Close()
 		assert.Equal(t, http.StatusUnauthorized, resp.StatusCode)
 	})
@@ -298,11 +300,11 @@ func TestSignInIntegration(t *testing.T) {
 			Email:    "email12@.com",
 			Password: "23rwgfds",
 		}
-		requestBody, err := json.Marshal(user)
-		require.NoError(t, err)
+		requestBody, err8 := json.Marshal(user)
+		require.NoError(t, err8)
 
-		resp, err := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
-		require.NoError(t, err)
+		resp, err9 := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
+		require.NoError(t, err9)
 		defer resp.Body.Close()
 		assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
 	})
@@ -313,11 +315,11 @@ func TestSignInIntegration(t *testing.T) {
 			Email:    "newuser@gmail.com",
 			Password: "237fuhaerug7fhu347fhwi87r8e7yw8yf7wyihyfkwiw5iwefhhfihisfiehisefhihsefihfeie4rye7y4rre4djsijdj",
 		}
-		requestBody, err := json.Marshal(user)
-		require.NoError(t, err)
+		requestBody, err10 := json.Marshal(user)
+		require.NoError(t, err10)
 
-		resp, err := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
-		require.NoError(t, err)
+		resp, err11 := http.Post(ts.URL+"/sign-in", "application/json", bytes.NewReader(requestBody))
+		require.NoError(t, err11)
 		defer resp.Body.Close()
 		assert.Equal(t, http.StatusInternalServerError, resp.StatusCode)
 	})
