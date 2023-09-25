@@ -141,9 +141,6 @@ func (s *ServiceFacade) Refresh(r *http.Request) (smodels.TokenDetails, error) {
 		return smodels.TokenDetails{}, err
 	}
 
-	if _, ok := token.Claims.(jwt.Claims); !ok && !token.Valid {
-		return smodels.TokenDetails{}, fmt.Errorf("error: %s", "invalid token")
-	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if ok && token.Valid {
 		refreshUuid, ok := claims["refresh_uuid"].(string)
