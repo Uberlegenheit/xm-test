@@ -79,7 +79,8 @@ func TestCreateCompanyIntegration(t *testing.T) {
 		err8 := json.NewDecoder(userResp.Body).Decode(&tt)
 		require.NoError(t, err8)
 
-		name, err := regen.Generate(fmt.Sprintf("[a-zA-Z0-9]{%d,%d}", 15, 15))
+		name, err88 := regen.Generate(fmt.Sprintf("[a-zA-Z0-9]{%d,%d}", 15, 15))
+		require.NoError(t, err88)
 		company := smodels.Company{
 			ID:          "0753913b-8910-40de-827f-6c0085dec47e",
 			Name:        name,
