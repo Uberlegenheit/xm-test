@@ -24,11 +24,11 @@ func TestCreateCompanyIntegration(t *testing.T) {
 			CORSAllowedOrigins: []string{"*"},
 		},
 		Postgres: conf.Postgres{
-			Host:     "localhost",
+			Host:     "postgres-db",
 			Port:     "5432",
 			User:     "postgres",
-			Password: "1234",
-			Database: "xm-test",
+			Password: "somesecretpassword1234",
+			Database: "xm-test-db",
 			SSLMode:  "disable",
 		},
 	}
