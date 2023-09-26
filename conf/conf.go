@@ -27,6 +27,9 @@ type (
 const Service = "xm-task"
 
 func GetNewConfig(path string) (Config, error) {
+	// I wasn't sure about "config file" requirement, so I made both .json and .env files
+	// I prefer using .env file only, because of its simplicity and convenience
+	// Also .env files are cool when using docker-compose
 	viper.SetConfigFile(path)
 	viper.SetConfigType("json")
 

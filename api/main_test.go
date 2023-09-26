@@ -9,6 +9,7 @@ import (
 	regen "github.com/zach-klippenstein/goregen"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 	"xm-task/api"
 	"xm-task/conf"
@@ -24,12 +25,12 @@ func TestCreateCompanyIntegration(t *testing.T) {
 			CORSAllowedOrigins: []string{"*"},
 		},
 		Postgres: conf.Postgres{
-			Host:     "postgres-db",
-			Port:     "5432",
-			User:     "postgres",
-			Password: "somesecretpassword1234",
-			Database: "xm-test-db",
-			SSLMode:  "disable",
+			Host:     os.Getenv("DB_HOST"),
+			Port:     os.Getenv("DB_PORT"),
+			User:     os.Getenv("DB_USER"),
+			Password: os.Getenv("DB_PASSWORD"),
+			Database: os.Getenv("DB_NAME"),
+			SSLMode:  os.Getenv("DB_SSL"),
 		},
 	}
 	d, err := dao.New(cfg, false)
